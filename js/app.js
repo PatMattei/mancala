@@ -15,19 +15,27 @@ const board = {
     storeB: 0
 }
 
-const countStones = (pit) => {
-    const $pit = $(pit)
-    const pitName = $pit.attr('name');
+const countStones = (space) => {
+    const $space = $(space);
+    const spaceName = $space.attr('id');
 
-    $pit.html(board[pitName]);
+    $space.html(board[spaceName]);
 };
+
+const moveStones = (event) => {};
+
 
 
 
 $(() => {
     //iterate through each pit
     $('.pit').each((i, pit) => {
-        countStones(pit)
-    }
-    );
+        countStones(pit);
+    });
+    $('.mancala-store').each((i, store) => {
+        countStones(store);
+    });
+
+    //on clicking a pit
+    $('.pit').on('click', moveStones);
 })
