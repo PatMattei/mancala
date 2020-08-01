@@ -22,7 +22,15 @@ const countStones = (space) => {
     $space.html(board[spaceName]);
 };
 
-const moveStones = (event) => {};
+const moveStones = (event) => {
+    $targetPit = $(event.currentTarget);
+    const stones = $targetPit.attr('contents');
+
+    board[$targetPit.attr('id')] = 0;
+    countStones($targetPit)
+
+    
+};
 
 
 
