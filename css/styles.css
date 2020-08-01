@@ -8,6 +8,7 @@
 .pit, .mancala-store {
     border: solid 1px black;
     height: 100%;
+    margin: 1%;
 }
 
 #pit-container {
