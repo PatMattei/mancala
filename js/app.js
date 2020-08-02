@@ -32,23 +32,27 @@ const moveStones = (event) => {
     pitPosition = $targetPit.attr('pit-position');
 
     const spaceName = $targetPit.attr('pit-position');
-    const stones = getStoneCount(spaceName);
+    let stones = getStoneCount(spaceName);
 
     board[$targetPit.attr('pit-position')] = 0; //remvoe the stones from pit
     updateBoard($targetPit);
 
     //move stone to neihgboring pits
-    for (let i = 0; i < stones; i++) {
+   while (stones > 0) {
         //new target is clockwise pit
         pitPosition--
-        if (pitPosition < 1) {
+        if (pitPosition < 1 && stones == 1) {
+            board.storeA++;
+            updateBoard($('#storeA'));
+        }
+        else if (pitPosition < 1) {
             pitPosition = 12;
         }
 
         const $newTarget = $(`.pit[pit-position="${pitPosition}"]`);
         board[pitPosition]++
         updateBoard($newTarget);
-
+        stones--;
     }
 };
 
