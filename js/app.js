@@ -15,6 +15,47 @@ const board = {
     storeB: 0
 }
 
+class Space {
+	constructor(stones, type, name) {
+        this.stones = stones;
+        this.type = type;
+        this.name = name;
+    }
+    checkStones() {
+        return this.stones;
+    }
+    checkType() {
+        return this.type;
+    }
+}
+
+class Store extends Space {
+    constructor(stones, type, name) {
+        super(stones, type, name);
+    }
+}
+
+const storeA = new Store(0, "store", "storeA");
+const a1 = new Space(4, "pit", "a1");
+const a2 = new Space(4, "pit", "a2");
+const a3 = new Space(4, "pit", "a3");
+const a4 = new Space(4, "pit", "a4");
+const a5 = new Space(4, "pit", "a5");
+const a6 = new Space(4, "pit", "a6");
+const storeB = new Store(0, "store", "storeB");
+const b1 = new Space(4, "pit", "b1");
+const b2 = new Space(4, "pit", "b2");
+const b3 = new Space(4, "pit", "b3");
+const b4 = new Space(4, "pit", "b4");
+const b5 = new Space(4, "pit", "b5");
+const b6 = new Space(4, "pit", "b6");
+const boardOrder = [storeA, a1, a2, a3, a4, a5, a6, storeB, b1, b2, b3, b4, b5, b6];
+
+//board should be an array with objects-- iterate through objects in array- objects can hold the functions to identify what should be done when they are accessed.
+//each space should have:
+//stones in it
+//type (ex. pit or store)
+
 const getStoneCount = (pitId) => {
     return board[pitId];
 };
