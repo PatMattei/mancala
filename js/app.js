@@ -4,8 +4,8 @@ let currentPlayer = "playerA"
 let players = ["playerA", "playerB"]
 
 class Space {
-	constructor(stones, type, player, name) {
-        this.stoneCount = stones;
+	constructor(stoneCount, type, player, name) {
+        this.stoneCount = stoneCount;
         this.type = type;
         this.player = player;
         this.name = name;
@@ -21,8 +21,8 @@ class Space {
 }
 
 class Store extends Space {
-    constructor(stones, type, player, name) {
-        super(stones, type, player, name);
+    constructor(stoneCount, type, player, name) {
+        super(stoneCount, type, player, name);
     }
 }
 
@@ -38,7 +38,7 @@ const b3 = new Space(4, "pit", "playerB", "b3");
 const b4 = new Space(4, "pit", "playerB", "b4");
 const b5 = new Space(4, "pit", "playerB", "b5");
 const b6 = new Space(4, "pit", "playerB", "b6");
-const storeA = new Store(0, "store", "playerA", "storeA");
+const storeA = new Store(3, "store", "playerA", "storeA");
 const storeB = new Store(0, "store", "playerB", "storeB");
 const board = {"a1": a1, a1,"a2": a2,"a3": a3,"a4": a4,"a5": a5,"a6": a6,"b1": b1,"b2": b2,"b3": b3,"b4": b4,"b5": b5,"b6": b6,"storeA": storeA,"storeB": storeB};
 
@@ -56,9 +56,11 @@ const moveStones = (event) => {
     let id = $targetPit.attr('id');
     let stonesInHand = board[id].stoneCount;
 
-    board[id].removeStones();
+    if ($targetPit.closest('.pit-row').hasClass('current-player-row') && stonesInHand > 0) {
+        board[id].removeStones();
 
-    shiftStones(stonesInHand, id);
+        shiftStones(stonesInHand, id);
+    }
 }
 
 const shiftStones = (stonesInHand, id) => {
@@ -101,16 +103,23 @@ const endTurn = (goAgain) => {
         }
     }
 
-    $('.current-player').html(currentPlayer);
+    $('.current-player-row').removeClass('current-player-row');
+
+    $(`#${currentPlayer}`).addClass('current-player-row');
+    determineTurn()
 }
+
+const determineTurn = () => {
+    let $currentPlayerRow = $('.current-player-row');
+    $('.pit').on('click', moveStones);
+
+    $('.current-player').html(currentPlayer);
+};
 
 
 $(() => {
     //iterate through each space
     boardOrder.forEach(space => updateBoard(board[space]));
 
-    //on clicking a pit
-    $('.pit').on('click', moveStones);
-
-    $('.current-player').html(currentPlayer);
+    determineTurn();
 })
