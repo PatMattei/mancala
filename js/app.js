@@ -1,4 +1,7 @@
+let endGame = false;
+
 let currentPlayer = "playerA"
+let players = ["playerA", "playerB"]
 
 class Space {
 	constructor(stones, type, player, name) {
@@ -9,9 +12,11 @@ class Space {
     }
     addStone() {
         this.stoneCount++;
+        boardOrder.forEach(space => updateBoard(board[space]));
     }
     removeStones() {
         this.stoneCount = 0;
+        boardOrder.forEach(space => updateBoard(board[space]));
     }
 }
 
@@ -40,10 +45,10 @@ const board = {"a1": a1, a1,"a2": a2,"a3": a3,"a4": a4,"a5": a5,"a6": a6,"b1": b
 const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6", "a5", "a4", "a3", "a2", "a1"];
 
 
-const  updateBoard = (space) => {
+const updateBoard = (space) => {
     const $space = $(`#${space.name}`);
 
-    $space.html(`${space.stoneCount}<br />${space.name}`);
+    $space.html(`Stones: ${space.stoneCount}<br />Space: ${space.name}`);
 };
 
 const moveStones = (event) => {
@@ -53,13 +58,15 @@ const moveStones = (event) => {
 
     board[id].removeStones();
 
-    updateBoard(board[id]);
     shiftStones(stonesInHand, id);
 }
 
 const shiftStones = (stonesInHand, id) => {
+    let goAgain = false;
+    
     //move stones to neighboring pits
     while (stonesInHand > 0) {
+
         //new target is clockwise pit/next space in array
         let index = boardOrder.indexOf(id) + 1;
         if(index > boardOrder.length - 1) { //if end of boardOrder array
@@ -69,25 +76,41 @@ const shiftStones = (stonesInHand, id) => {
        id = boardOrder[index];
 
         //if you have more than one stone in hand and land on the opponent's store, skip:
-        if (board[id].type === "store" && stonesInHand > 1 && board[id].player != currentPlayer) {
+        if (board[id].type === "store" && stonesInHand >= 1 && board[id].player != currentPlayer) {
             index++;
+        } else if (board[id].type === "store" && stonesInHand === 1 && board[id].player === currentPlayer) {
+            board[id].addStone();
+            stonesInHand--;
+
+            alert(`${currentPlayer} go again`);
+            goAgain = true;
         } else {
             board[id].addStone();
-            updateBoard(board[id]);
-            if (board[id].type === "store" && stonesInHand === 1 && board[id].player === currentPlayer) {
-                console.log('playerA go again');
-            }
             stonesInHand--;
         }
     }
+    endTurn(goAgain);
 };
+
+const endTurn = (goAgain) => {
+    if (goAgain != true) {
+        if (players.indexOf(currentPlayer) === 0) {
+            currentPlayer = players[1];
+        } else {
+            currentPlayer = players[0];
+        }
+    }
+
+    $('.current-player').html(currentPlayer);
+}
 
 
 $(() => {
     //iterate through each space
     boardOrder.forEach(space => updateBoard(board[space]));
-    $('.current-player').html(currentPlayer)
 
     //on clicking a pit
     $('.pit').on('click', moveStones);
+
+    $('.current-player').html(currentPlayer);
 })
