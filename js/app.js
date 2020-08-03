@@ -1,3 +1,5 @@
+let currentPlayer = "playerA"
+
 class Space {
 	constructor(stones, type, player, name) {
         this.stoneCount = stones;
@@ -58,36 +60,33 @@ const moveStones = (event) => {
 const shiftStones = (stonesInHand, id) => {
     //move stones to neighboring pits
     while (stonesInHand > 0) {
-        //new target is clockwise pit
+        //new target is clockwise pit/next space in array
         let index = boardOrder.indexOf(id) + 1;
-        if(index > boardOrder.length - 1) {
+        if(index > boardOrder.length - 1) { //if end of boardOrder array
             index = 0;
         }
         
        id = boardOrder[index];
 
-        //if you have more than one stone in hand and land on the store; skip store:
-        if (board[id].type === "store" && stonesInHand > 1) {
+        //if you have more than one stone in hand and land on the opponent's store, skip:
+        if (board[id].type === "store" && stonesInHand > 1 && board[id].player != currentPlayer) {
             index++;
         } else {
             board[id].addStone();
             updateBoard(board[id]);
-            stonesInHand--
-            //if we end on a store, add score
-            if (board[id].type === "store") {
-                console.log("SCORE")
-                //score();
+            if (board[id].type === "store" && stonesInHand === 1 && board[id].player === currentPlayer) {
+                console.log('playerA go again');
             }
+            stonesInHand--;
         }
     }
 };
 
 
-
-
 $(() => {
     //iterate through each space
-    boardOrder.forEach(space => updateBoard(board[space]))
+    boardOrder.forEach(space => updateBoard(board[space]));
+    $('.current-player').html(currentPlayer)
 
     //on clicking a pit
     $('.pit').on('click', moveStones);
