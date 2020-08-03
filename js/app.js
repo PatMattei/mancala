@@ -1,7 +1,8 @@
 class Space {
-	constructor(stones, type, name) {
+	constructor(stones, type, player, name) {
         this.stoneCount = stones;
         this.type = type;
+        this.player = player;
         this.name = name;
     }
     addStone() {
@@ -13,38 +14,28 @@ class Space {
 }
 
 class Store extends Space {
-    constructor(stones, type, name) {
-        super(stones, type, name);
+    constructor(stones, type, player, name) {
+        super(stones, type, player, name);
     }
 }
 
-class Factory {
-	constructor() {
-	}
-	generatePit(i) {
-		const newPit = new Space(4, "pit", `${i}`);
-		enemyList.push(newPit);
-	}
-
-}
-
-const a1 = new Space(4, "pit", "a1");
-const a2 = new Space(4, "pit", "a2");
-const a3 = new Space(4, "pit", "a3");
-const a4 = new Space(4, "pit", "a4");
-const a5 = new Space(4, "pit", "a5");
-const a6 = new Space(4, "pit", "a6");
-const b1 = new Space(4, "pit", "b1");
-const b2 = new Space(4, "pit", "b2");
-const b3 = new Space(4, "pit", "b3");
-const b4 = new Space(4, "pit", "b4");
-const b5 = new Space(4, "pit", "b5");
-const b6 = new Space(4, "pit", "b6");
-const storeA = new Store(0, "store", "storeA");
-const storeB = new Store(0, "store", "storeB");
+const a1 = new Space(4, "pit", "playerA", "a1");
+const a2 = new Space(4, "pit", "playerA", "a2");
+const a3 = new Space(4, "pit", "playerA", "a3");
+const a4 = new Space(4, "pit", "playerA", "a4");
+const a5 = new Space(4, "pit", "playerA", "a5");
+const a6 = new Space(4, "pit", "playerA", "a6");
+const b1 = new Space(4, "pit", "playerB", "b1");
+const b2 = new Space(4, "pit", "playerB", "b2");
+const b3 = new Space(4, "pit", "playerB", "b3");
+const b4 = new Space(4, "pit", "playerB", "b4");
+const b5 = new Space(4, "pit", "playerB", "b5");
+const b6 = new Space(4, "pit", "playerB", "b6");
+const storeA = new Store(0, "store", "playerA", "storeA");
+const storeB = new Store(0, "store", "playerB", "storeB");
 const board = {"a1": a1, a1,"a2": a2,"a3": a3,"a4": a4,"a5": a5,"a6": a6,"b1": b1,"b2": b2,"b3": b3,"b4": b4,"b5": b5,"b6": b6,"storeA": storeA,"storeB": storeB};
 
-const boardOrder = ["storeA", "a1", "a2", "a3", "a4", "a5", "a6", "storeB", "b1", "b2", "b3", "b4", "b5", "b6"];
+const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6", "a5", "a4", "a3", "a2", "a1"];
 
 
 const  updateBoard = (space) => {
@@ -59,31 +50,36 @@ const moveStones = (event) => {
     let stonesInHand = board[id].stoneCount;
 
     board[id].removeStones();
+
     updateBoard(board[id]);
+    shiftStones(stonesInHand, id);
+}
 
-
-    //move stone to neihgboring pits
+const shiftStones = (stonesInHand, id) => {
+    //move stones to neighboring pits
     while (stonesInHand > 0) {
         //new target is clockwise pit
-        const target = boardOrder.indexOf(id) - 1;
-        id = boardOrder[target];
-        board[id].addStone();
-        stonesInHand--;
-        updateBoard(board[id]);
-    }
-//         if (pitPosition < 1 && stones == 1) {
-//             board.storeA++;
-//             updateBoard($('#storeA'));
-//         }
-//         else if (pitPosition < 1) {
-//             pitPosition = 12;
-//         }
+        let index = boardOrder.indexOf(id) + 1;
+        if(index > boardOrder.length - 1) {
+            index = 0;
+        }
+        
+       id = boardOrder[index];
 
-//         const $newTarget = $(`.pit[pit-position="${pitPosition}"]`);
-//         board[pitPosition]++
-//         updateBoard($newTarget);
-//         stones--;
-//     }
+        //if you have more than one stone in hand and land on the store; skip store:
+        if (board[id].type === "store" && stonesInHand > 1) {
+            index++;
+        } else {
+            board[id].addStone();
+            updateBoard(board[id]);
+            stonesInHand--
+            //if we end on a store, add score
+            if (board[id].type === "store") {
+                console.log("SCORE")
+                //score();
+            }
+        }
+    }
 };
 
 
