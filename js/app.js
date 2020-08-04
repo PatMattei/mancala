@@ -12,11 +12,11 @@ class Space {
     }
     addStone() {
         this.stoneCount++;
-        boardOrder.forEach(space => updateBoard(board[space]));
+        boardOrder.forEach(space => updateSpace(board[space]));
     }
     removeStones() {
         this.stoneCount = 0;
-        boardOrder.forEach(space => updateBoard(board[space]));
+        boardOrder.forEach(space => updateSpace(board[space]));
     }
     captureStones() {
         let targetSide = "";
@@ -44,23 +44,29 @@ class Space {
     }
 }
 
-const a1 = new Space(4, "pit", "playerA", "1", "a1");
-const a2 = new Space(4, "pit", "playerA", "2", "a2");
-const a3 = new Space(4, "pit", "playerA", "3", "a3");
-const a4 = new Space(4, "pit", "playerA", "4", "a4");
-const a5 = new Space(4, "pit", "playerA", "5", "a5");
-const a6 = new Space(4, "pit", "playerA", "6", "a6");
-const b1 = new Space(4, "pit", "playerB", "1", "b1");
-const b2 = new Space(4, "pit", "playerB", "2", "b2");
-const b3 = new Space(4, "pit", "playerB", "3", "b3");
-const b4 = new Space(4, "pit", "playerB", "4", "b4");
-const b5 = new Space(4, "pit", "playerB", "5", "b5");
-const b6 = new Space(4, "pit", "playerB", "6", "b6");
+const a1 = new Space(1, "pit", "playerA", "1", "a1");
+const a2 = new Space(0, "pit", "playerA", "2", "a2");
+const a3 = new Space(0, "pit", "playerA", "3", "a3");
+const a4 = new Space(0, "pit", "playerA", "4", "a4");
+const a5 = new Space(0, "pit", "playerA", "5", "a5");
+const a6 = new Space(0, "pit", "playerA", "6", "a6");
+const b1 = new Space(0, "pit", "playerB", "1", "b1");
+const b2 = new Space(0, "pit", "playerB", "2", "b2");
+const b3 = new Space(0, "pit", "playerB", "3", "b3");
+const b4 = new Space(3, "pit", "playerB", "4", "b4");
+const b5 = new Space(0, "pit", "playerB", "5", "b5");
+const b6 = new Space(0, "pit", "playerB", "6", "b6");
 const storeA = new Space(0, "store", "playerA", "0", "storeA");
 const storeB = new Space(0, "store", "playerB", "0", "storeB");
  
 const board = {"a1": a1, "a2": a2, "a3": a3, "a4": a4, "a5": a5, "a6": a6, "b1": b1, "b2": b2, "b3": b3, "b4": b4, "b5": b5, "b6": b6, "storeA": storeA ,"storeB": storeB};
+
+const pits = [a1, a2, a3, a4, a5, a6, b1, b2, b3, b4, b5, b6];
 const stores = [storeA, storeB];
+
+
+let playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+let playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
 
 
 
@@ -75,7 +81,7 @@ const stores = [storeA, storeB];
 
 const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6", "a5", "a4", "a3", "a2", "a1"];
 
-const updateBoard = (space) => {
+const updateSpace = (space) => {
     const $space = $(`#${space.name}`);
 
     $space.html(`Stones: ${space.stoneCount}<br />Space: ${space.name}`);
@@ -113,9 +119,13 @@ const shiftStones = (stonesInHand, id) => {
         } else if (board[id].type === "store" && stonesInHand === 1 && board[id].owner === currentPlayer) {
             board[id].addStone();
             stonesInHand--;
-
-            alert(`${currentPlayer} go again`);
             goAgainStatus = true;
+
+            playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+            playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+            if (playerAPitStones > 0 || playerBPitStones > 0 ) {
+                alert(`${currentPlayer} go again`);
+            }
         } else {
             board[id].addStone();
             stonesInHand--;
@@ -129,38 +139,46 @@ const shiftStones = (stonesInHand, id) => {
 };
 
 const endTurn = (goAgain) => {
-    if (goAgain != true) {
-        if (players.indexOf(currentPlayer) === 0) {
-            currentPlayer = players[1];
-        } else {
-            currentPlayer = players[0];
-        }
+    playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+    playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+    
+    if (playerAPitStones <= 0 || playerBPitStones <= 0 ) {
+        alert('game over!');
+        $('.play-again').css('display', 'block');
+        endGame = true;
+        handleEndGame(playerAPitStones, playerBPitStones);
     }
 
-    $('.current-player-row').removeClass('current-player-row');
+    if (endGame === false) {
+        if (goAgain != true) {
+            if (players.indexOf(currentPlayer) === 0) {
+                currentPlayer = players[1];
+            } else {
+                currentPlayer = players[0];
+            }
+        }
 
-    $(`#${currentPlayer}`).addClass('current-player-row');
-    $('.current-player').html(currentPlayer);
+        $('.current-player-row').removeClass('current-player-row');
+
+        $(`#${currentPlayer}`).addClass('current-player-row');
+        $('.current-player').html(currentPlayer);
+    }
 }
 
+const handleEndGame = (playerAPitStones, playerBPitStones) => {
+    storeA.stoneCount += playerAPitStones;
+    storeB.stoneCount += playerBPitStones;
+    pits.forEach(pit => {pit.removeStones()});
+    boardOrder.forEach(store => updateSpace(board[store]));
+};
 
 
 $(() => {
-
-    boardOrder.forEach(space => updateBoard(board[space]));
-
-    const playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
-    const playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
     //set up board status
-        $('.pit').on('click', moveStones);
-        $('.current-player').html(currentPlayer);
+    boardOrder.forEach(space => updateSpace(board[space]));
 
-        if (playerAPitStones <= 0 || playerBPitStones <= 0 ) {
-            alert('game over!');
-            $('.play-again').css('display', 'block');
-            endGame = true;
-        }
-
+    $('.pit').on('click', moveStones);
+    $('.current-player').html(currentPlayer);
 
     $('.play-again').on('click', () => {location.reload(true)})
 });
