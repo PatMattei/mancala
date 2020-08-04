@@ -76,9 +76,17 @@ const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6"
 
 const updateSpace = (space) => {
     const $space = $(`#${space.name}`);
-
-    $space.html(`Stones: ${space.stoneCount}<br />Space: ${space.name}`);
+    $space.html(`Stones: ${space.stoneCount}<br />`);
+    displayStones(space);
 };
+
+const displayStones = (space) => {
+    const $space = $(`#${space.name}`);
+    for (i = 1; i <= space.stoneCount; i++) {
+        $space.append(`<span class="stone">&#128142;</span>`)
+    }
+};
+
 
 const moveStones = (event) => {
     $targetPit = $(event.currentTarget);
