@@ -12,10 +12,14 @@ class Space {
     }
     addStone() {
         this.stoneCount++;
+        playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+        playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
         boardOrder.forEach(space => updateSpace(board[space]));
     }
     removeStones() {
         this.stoneCount = 0;
+        playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+        playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
         boardOrder.forEach(space => updateSpace(board[space]));
     }
     captureStones() {
@@ -44,18 +48,18 @@ class Space {
     }
 }
 
-const a1 = new Space(1, "pit", "playerA", "1", "a1");
-const a2 = new Space(0, "pit", "playerA", "2", "a2");
-const a3 = new Space(0, "pit", "playerA", "3", "a3");
-const a4 = new Space(0, "pit", "playerA", "4", "a4");
-const a5 = new Space(0, "pit", "playerA", "5", "a5");
-const a6 = new Space(0, "pit", "playerA", "6", "a6");
-const b1 = new Space(0, "pit", "playerB", "1", "b1");
-const b2 = new Space(0, "pit", "playerB", "2", "b2");
-const b3 = new Space(0, "pit", "playerB", "3", "b3");
-const b4 = new Space(3, "pit", "playerB", "4", "b4");
-const b5 = new Space(0, "pit", "playerB", "5", "b5");
-const b6 = new Space(0, "pit", "playerB", "6", "b6");
+const a1 = new Space(4, "pit", "playerA", "1", "a1");
+const a2 = new Space(4, "pit", "playerA", "2", "a2");
+const a3 = new Space(4, "pit", "playerA", "3", "a3");
+const a4 = new Space(4, "pit", "playerA", "4", "a4");
+const a5 = new Space(4, "pit", "playerA", "5", "a5");
+const a6 = new Space(4, "pit", "playerA", "6", "a6");
+const b1 = new Space(4, "pit", "playerB", "1", "b1");
+const b2 = new Space(4, "pit", "playerB", "2", "b2");
+const b3 = new Space(4, "pit", "playerB", "3", "b3");
+const b4 = new Space(4, "pit", "playerB", "4", "b4");
+const b5 = new Space(4, "pit", "playerB", "5", "b5");
+const b6 = new Space(4, "pit", "playerB", "6", "b6");
 const storeA = new Space(0, "store", "playerA", "0", "storeA");
 const storeB = new Space(0, "store", "playerB", "0", "storeB");
  
@@ -67,17 +71,6 @@ const stores = [storeA, storeB];
 
 let playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
 let playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
-
-
-
-// const board = {
-//     PlayerA: {
-//         "position1": a1, "position2": a2, "position3": a3, "position4": a4, "position5": a5, "position6": a6, "store": storeA
-//     },
-//     PlayerB: {
-//         "position1": b1, "position2": b2, "position3": b3, "position4": b4, "position5": b5, "position6": b6,"store": storeB
-//     }
-// };
 
 const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6", "a5", "a4", "a3", "a2", "a1"];
 
@@ -92,7 +85,7 @@ const moveStones = (event) => {
     let id = $targetPit.attr('id');
     let stonesInHand = board[id].stoneCount;
 
-    if ($targetPit.closest('.pit-row').hasClass('current-player-row') && stonesInHand > 0) {
+    if ($targetPit.closest('.pit-row').hasClass('current-player-row') && stonesInHand > 0) { //only let players target their row
         board[id].removeStones();
 
         shiftStones(stonesInHand, id);
@@ -121,9 +114,9 @@ const shiftStones = (stonesInHand, id) => {
             stonesInHand--;
             goAgainStatus = true;
 
-            playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
-            playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
-            if (playerAPitStones > 0 || playerBPitStones > 0 ) {
+            if (playerAPitStones === 0 || playerBPitStones === 0 ) {
+                goAgainStatus = false;
+            } else {
                 alert(`${currentPlayer} go again`);
             }
         } else {
@@ -142,7 +135,7 @@ const endTurn = (goAgain) => {
     playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
     playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
     
-    if (playerAPitStones <= 0 || playerBPitStones <= 0 ) {
+    if (playerAPitStones <= 0 || playerBPitStones <= 0) {
         alert('game over!');
         $('.play-again').css('display', 'block');
         endGame = true;
@@ -166,9 +159,11 @@ const endTurn = (goAgain) => {
 }
 
 const handleEndGame = (playerAPitStones, playerBPitStones) => {
+    //remove remaining stones to stores
     storeA.stoneCount += playerAPitStones;
     storeB.stoneCount += playerBPitStones;
     pits.forEach(pit => {pit.removeStones()});
+
     boardOrder.forEach(store => updateSpace(board[store]));
 };
 
