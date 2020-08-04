@@ -149,8 +149,18 @@ $(() => {
 
     boardOrder.forEach(space => updateBoard(board[space]));
 
+    const playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+    const playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
     //set up board status
+        $('.pit').on('click', moveStones);
+        $('.current-player').html(currentPlayer);
 
-    $('.pit').on('click', moveStones);
-    $('.current-player').html(currentPlayer);
+        if (playerAPitStones <= 0 || playerBPitStones <= 0 ) {
+            alert('game over!');
+            $('.play-again').css('display', 'block');
+            endGame = true;
+        }
+
+
+    $('.play-again').on('click', () => {location.reload(true)})
 });
