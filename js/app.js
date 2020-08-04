@@ -165,6 +165,14 @@ const handleEndGame = (playerAPitStones, playerBPitStones) => {
     pits.forEach(pit => {pit.removeStones()});
 
     boardOrder.forEach(store => updateSpace(board[store]));
+
+    if (storeA.stoneCount > storeB.stoneCount) {
+        alert("Player A WINS!");
+    } else if (storeB.stoneCount > storeA.stoneCount) {
+        alert("Player B WINS!");
+    } else {
+        alert("TIE!");
+    }
 };
 
 
