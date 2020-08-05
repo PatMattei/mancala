@@ -48,7 +48,7 @@ class Space {
         board[currentPlayerStore].stoneCount += board[targetSpace].stoneCount + this.stoneCount;
         
         boardOrder.forEach(space => updateSpace(board[space]));
-        alert(`Captured 1 stone from your side`);
+        alert(`Moved 1 stone from your side`);
         if (board[targetSpace].stoneCount > 0) {alert(`Captured ${board[targetSpace].stoneCount} stones from opponent`)};
         board[targetSpace].removeStones()
         this.removeStones();
