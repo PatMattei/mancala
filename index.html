@@ -11,13 +11,14 @@
 		<script src="js/app.js"></script>
 
 		<link rel="stylesheet" href="css/styles.css" />
-		<title>Mancala</title>
+		<title>Mancalamoji</title>
 	</head>
 	<body>
 		<div id="container">
+			<h1>Mancalamoji</h1>
 			<div id="emoji-selector" class="overlay overlay-active">
 				<div class="overlay-container">
-					<h1>Welcome to Mancalamoji!</h1>
+					<h2>Welcome to Mancalamoji!</h2>
 					<p class="user-text"></p>
 					<ul class="emoji-list"></ul>
 				</div>
@@ -25,6 +26,7 @@
 			<div id="rules" class="overlay">
 				<div class="overlay-container">
 					<span class="overlay-close">X</span>
+					<h2>Rules</h2>
 					<p>This is a two player game. Player A and Player B both have six pits that start filled with four stones. On their turn, one player removes the stones from a pit on their side and redistributes one seed to each pit on the board, going counter-clockwise, until they have no more seeds in their hand (click the pit you want to empty and redistribute). </p>
 					<p>The large stores at the end of board are the players' banks. Seeds in the bank are locked there until the end of the game, and whoever has the most seeds wins the game.</p>
 					<p>When redistribting the seeds, a player adds one seed to their bank if they come to while redistribting seeds counter-clockwise. A player will skip their opponent's bank, not distribute any seeds in there, and will instead put the seed in the next pit. If a player puts the final pit in their hand into their bank, they get to go again.</p>
@@ -36,7 +38,7 @@
 			<div id="board">
 				<div class="mancala-store current-player-store" id="storeA">
 					<div>PlayerA's Store</div>
-					<div class="stone-count">Stones: 0</div>
+					<div class="stone-count">Pieces: 0</div>
 				</div>
 				<div id="pit-container">
 					<div class="pit-row current-player-row" id="playerA">
@@ -58,7 +60,7 @@
 				</div>
 				<div class="mancala-store" id="storeB">
 					<div>PlayerB's Store</div>
-					<div class="stone-count">Stones: 0</div>
+					<div class="stone-count">Pieces: 0</div>
 				</div>
 			</div>
 			<div id="player-display">

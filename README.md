@@ -18,3 +18,5 @@ I wanted it to be easy to iterate through each space on the board, so I made obj
 I used flexbox to style the board, which made it easy to create grids for the pits. It also let the board be scaleable regardless of screensize.
 
 I used this as a guide for the rules: https://endlessgames.com/wp-content/uploads/Mancala_Instructions.pdf
+
+I got a bunch of the HTML codes for emojis from: https://html-css-js.com/
