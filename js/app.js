@@ -199,13 +199,43 @@ const handleEndGame = (playerAPitStones, playerBPitStones) => {
     if (storeA.stoneCount > storeB.stoneCount) {
         alert("Player A WINS!");
         $('#storeA').addClass('winner');
+        displayWinScreen("playerA");
     } else if (storeB.stoneCount > storeA.stoneCount) {
         alert("Player B WINS!");
         $('#storeB').addClass('winner');
+        displayWinScreen("playerB");
     } else {
         alert("TIE!");
     }
 };
+
+const displayWinScreen = (winner) => {
+    const winnerEmoji = emoji[winner];
+    $('body').prepend('<div class="win-screen"></div>');
+
+    //generate a random number of emojis between 20 and 50
+    const randomNumber = Math.floor(Math.random() * 60) + 20;
+    for (i = 0; i <= randomNumber; i++) {
+        randomSize = Math.floor(Math.random() * 15) + 6;
+        randomLeft = Math.floor(Math.random() * 90) + 1;
+        randomClass = Math.floor(Math.random() * 5) + 1;
+
+        if (randomClass === 1) {
+            animationClass = "slowest";
+        } else if (randomClass === 2) {
+            animationClass = "slow";
+        } else if (randomClass === 3) {
+            animationClass = "medium";
+        } else if (randomClass === 4) {
+            animationClass = "fast";
+        } else if (randomClass === 5) {
+            animationClass = "fastest";
+        }
+
+        $('.win-screen').append($(`<div class="win-emoji ${animationClass}" style="font-size: ${randomSize}vw; left: ${randomLeft}%; position: absolute">${winnerEmoji}</div>`));
+    }
+};
+
 
 const updateStoneCounts = () => {
     playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
@@ -245,7 +275,8 @@ $(() => {
     greetPlayers();
 
 
-    $('.pit').on('click', moveStones);
+    //$('.pit').on('click', moveStones);
+    $('.pit').on('click', () => {displayWinScreen("playerA")});
     $('.current-player').html(currentPlayer);
 
 

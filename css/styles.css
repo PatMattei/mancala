@@ -128,12 +128,34 @@ body {font-family: sans-serif;}
     margin: .5%;
 }
 
-/* 
-.winner .stone {
+.win-screen {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.win-screen .win-emoji.slowest {
+    animation: expand 6s infinite;
+}
+
+.win-screen .win-emoji.slow {
     animation: expand 5s infinite;
 }
 
+.win-screen .win-emoji.medium {
+    animation: expand 4s infinite;
+}
+.win-screen .win-emoji.fast {
+    animation: expand 3s infinite;
+}
+.win-screen .win-emoji.fastest {
+    animation: expand 1s infinite;
+}
+
 @keyframes expand {
-    from {font-size: 0px;}
-    to {font-size: 200px;}
-  } */
+    from {top: -10vh;}
+    to {top: 100vh;}
+  } 
