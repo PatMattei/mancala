@@ -183,12 +183,19 @@ const handleEndGame = (playerAPitStones, playerBPitStones) => {
     }
 };
 
+// const previewMove = (event) => {
+//     const $target = $(event.currentTarget);
+//     const 
+// };
+
+
 
 $(() => {
     //set up board status
     boardOrder.forEach(space => updateSpace(board[space]));
 
     $('.pit').on('click', moveStones);
+    //$('.pit').hover(() => previewMove());
     $('.current-player').html(currentPlayer);
 
     $('.play-again').on('click', () => {location.reload(true)})
