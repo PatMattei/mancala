@@ -5,6 +5,10 @@
 let endGame = false;
 let currentPlayer = "playerA";
 let players = ["playerA", "playerB"];
+let emoji = {
+    "playerA": "",
+    "playerB": ""
+}
 
 class Space {
 	constructor(stoneCount, type, owner, boardPosition, name) {
@@ -81,7 +85,7 @@ const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6"
 
 const updateSpace = (space) => {
     const $space = $(`#${space.name}`);
-    $space.html(`Stones: ${space.stoneCount}<br />`);
+    $space.html(`Pieces: ${space.stoneCount}<br />`);
 
     if (space.type === "store") {
         $space.prepend(`${space.owner}'s Store<br />`);
@@ -92,7 +96,7 @@ const updateSpace = (space) => {
 const displayStones = (space) => {
     const $space = $(`#${space.name}`);
     for (i = 1; i <= space.stoneCount; i++) {
-        $space.append(`<span class="stone">&#128142;</span>`)
+        $space.append(`<span class="stone">${emoji[space.owner]}</span>`)
     }
 };
 
@@ -209,10 +213,35 @@ const updateStoneCounts = () => {
     playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
 };
 
+const greetPlayers = () => {
+    $('#emoji-selector').addClass('overlay-active');
+    $('.user-text').html(`<b>${currentPlayer}</b>, choose your emoji:`);
+
+    $('.emoji').on('click', (event) => {
+        emoji[currentPlayer] = $(event.currentTarget).text();
+
+        if (players.indexOf(currentPlayer) === 0) {
+            currentPlayer = players[1];
+            $('.user-text').html(`<b>${currentPlayer}</b>, choose your emoji:`);
+        } else {
+            currentPlayer = players[0];
+            $('.user-text').html(`<b>${currentPlayer}</b>, choose your emoji:`);
+        }
+
+        if (emoji[currentPlayer] != "") {
+            $('#emoji-selector').removeClass('overlay-active');
+        }
+
+        boardOrder.forEach(space => updateSpace(board[space]));
+    });
+};
+
+
 
 $(() => {
     //set up board status
-    boardOrder.forEach(space => updateSpace(board[space]));
+    greetPlayers();
+
 
     $('.pit').on('click', moveStones);
     $('.current-player').html(currentPlayer);

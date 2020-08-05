@@ -114,6 +114,10 @@
     cursor: pointer;
 }
 
+.emoji {
+    cursor: pointer;
+}
+
 /* 
 .winner .stone {
     animation: expand 5s infinite;
