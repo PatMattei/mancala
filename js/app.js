@@ -16,14 +16,12 @@ class Space {
     }
     addStone() {
         this.stoneCount++;
-        playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
-        playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+        updateStoneCounts();
         boardOrder.forEach(space => updateSpace(board[space]));
     }
     removeStones() {
         this.stoneCount = 0;
-        playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
-        playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+        updateStoneCounts();
         boardOrder.forEach(space => updateSpace(board[space]));
     }
     captureStones() {
@@ -48,7 +46,7 @@ class Space {
         board[currentPlayerStore].stoneCount += board[targetSpace].stoneCount + this.stoneCount;
         
         boardOrder.forEach(space => updateSpace(board[space]));
-        alert(`Moved 1 stone from your side`);
+        alert(`Moved 1 stone from your side to your store`);
         if (board[targetSpace].stoneCount > 0) {alert(`Captured ${board[targetSpace].stoneCount} stones from opponent`)};
         board[targetSpace].removeStones()
         this.removeStones();
@@ -84,6 +82,10 @@ const boardOrder = ["storeA", "b1", "b2", "b3", "b4", "b5", "b6", "storeB", "a6"
 const updateSpace = (space) => {
     const $space = $(`#${space.name}`);
     $space.html(`Stones: ${space.stoneCount}<br />`);
+
+    if (space.type === "store") {
+        $space.prepend(`${space.owner}'s Store<br />`);
+    }
     displayStones(space);
 };
 
@@ -147,8 +149,7 @@ const shiftStones = (stonesInHand, id) => {
 };
 
 const endTurn = (goAgain) => {
-    playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
-    playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+    updateStoneCounts();
     
     if (playerAPitStones <= 0 || playerBPitStones <= 0) {
         alert('game over!');
@@ -170,6 +171,15 @@ const endTurn = (goAgain) => {
 
         $(`#${currentPlayer}`).addClass('current-player-row');
         $('.current-player').html(currentPlayer);
+        
+        stores.forEach((store) => {    
+            console.log(store.owner)
+            if (store.owner === currentPlayer) {
+                $(`#${store.name}`).addClass('current-player-store');
+            } else {
+                $(`#${store.name}`).removeClass('current-player-store');
+            }
+        });
     }
 }
 
@@ -190,11 +200,10 @@ const handleEndGame = (playerAPitStones, playerBPitStones) => {
     }
 };
 
-// const previewMove = (event) => {
-//     const $target = $(event.currentTarget);
-//     const 
-// };
-
+const updateStoneCounts = () => {
+    playerAPitStones = a1.stoneCount + a2.stoneCount + a3.stoneCount + a4.stoneCount + a5.stoneCount + a6.stoneCount;
+    playerBPitStones = b1.stoneCount + b2.stoneCount + b3.stoneCount + b4.stoneCount + b5.stoneCount + b6.stoneCount;
+};
 
 
 $(() => {
@@ -202,8 +211,8 @@ $(() => {
     boardOrder.forEach(space => updateSpace(board[space]));
 
     $('.pit').on('click', moveStones);
-    //$('.pit').hover(() => previewMove());
     $('.current-player').html(currentPlayer);
+
 
     $('.play-again').on('click', () => {location.reload(true)})
 });

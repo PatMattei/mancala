@@ -15,7 +15,10 @@
 	<body>
 		<div id="container">
 			<div id="board">
-				<div class="mancala-store" id="storeA"></div>
+				<div class="mancala-store current-player-store" id="storeA">
+					<div>PlayerA's Store</div>
+					<div class="stone-count">Stones: 0</div>
+				</div>
 				<div id="pit-container">
 					<div class="pit-row current-player-row" id="playerA">
 						<div class="pit" id="a1"></div>
@@ -34,7 +37,10 @@
 						<div class="pit" id="b6"></div>
 					</div>
 				</div>
-				<div class="mancala-store" id="storeB"></div>
+				<div class="mancala-store" id="storeB">
+					<div>PlayerB's Store</div>
+					<div class="stone-count">Stones: 0</div>
+				</div>
 			</div>
 			<div id="player-display">
 				Current Player: <span class="current-player"></span>

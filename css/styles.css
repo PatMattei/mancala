@@ -42,8 +42,21 @@
     margin: 0 1%;
 }
 
+.current-player-row .pit,
+.current-player-store {
+    border: solid #7B4D19 3px;
+}
+.current-player-row .pit:hover {
+    border: solid #7B4D19 4px;
+}
 
-.current-player-row {
+.current-player-row .pit:hover .stone {
+    font-size: 1.75vw;
+}
+
+
+.current-player-row,
+.current-player-store {
     font-weight: bold;
 }
 
