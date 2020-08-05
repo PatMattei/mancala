@@ -152,7 +152,7 @@ const endTurn = (goAgain) => {
     updateStoneCounts();
     
     if (playerAPitStones <= 0 || playerBPitStones <= 0) {
-        alert('game over!');
+        alert('GAME OVER!');
         $('.play-again').css('display', 'block');
         endGame = true;
         handleEndGame(playerAPitStones, playerBPitStones);
@@ -173,7 +173,6 @@ const endTurn = (goAgain) => {
         $('.current-player').html(currentPlayer);
         
         stores.forEach((store) => {    
-            console.log(store.owner)
             if (store.owner === currentPlayer) {
                 $(`#${store.name}`).addClass('current-player-store');
             } else {
@@ -190,11 +189,16 @@ const handleEndGame = (playerAPitStones, playerBPitStones) => {
     pits.forEach(pit => {pit.removeStones()});
 
     boardOrder.forEach(store => updateSpace(board[store]));
+    
+    $(`.mancala-store`).removeClass('current-player-store');
+    $('.current-player-row').removeClass('current-player-row');
 
     if (storeA.stoneCount > storeB.stoneCount) {
         alert("Player A WINS!");
+        $('#storeA').addClass('winner');
     } else if (storeB.stoneCount > storeA.stoneCount) {
         alert("Player B WINS!");
+        $('#storeB').addClass('winner');
     } else {
         alert("TIE!");
     }
