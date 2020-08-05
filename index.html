@@ -14,6 +14,18 @@
 	</head>
 	<body>
 		<div id="container">
+			
+			<div id="rules" class="overlay">
+				<div class="overlay-container">
+					<span class="overlay-close">X</span>
+					<p>This is a two player game. Player A and Player B both have six pits that start filled with four stones. On their turn, one player removes the stones from a pit on their side and redistributes one seed to each pit on the board, going counter-clockwise, until they have no more seeds in their hand (click the pit you want to empty and redistribute). </p>
+					<p>The large stores at the end of board are the players' banks. Seeds in the bank are locked there until the end of the game, and whoever has the most seeds wins the game.</p>
+					<p>When redistribting the seeds, a player adds one seed to their bank if they come to while redistribting seeds counter-clockwise. A player will skip their opponent's bank, not distribute any seeds in there, and will instead put the seed in the next pit. If a player puts the final pit in their hand into their bank, they get to go again.</p>
+					<p>If a player puts their final seed into an EMPTY pit, they move that seed and any other seeds in the pit opposite that spot on the board to their bank.
+					The game ends when all six pits on a side of the board are empty. The non-empty side seeds are moved into the bank of the player who still has seeds on their side.
+					Whoever has the most seeds in their bank at the end is the winner!</p>
+				</div>
+			</div>
 			<div id="board">
 				<div class="mancala-store current-player-store" id="storeA">
 					<div>PlayerA's Store</div>
@@ -46,6 +58,7 @@
 				Current Player: <span class="current-player"></span>
 			</div>
 			<button class="play-again">Play Again</button>
+			<button class="rules-display overlay-display" overlay="rules">?</button>
 		</div>
 	</body>
 </html>

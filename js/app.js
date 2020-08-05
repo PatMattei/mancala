@@ -218,5 +218,13 @@ $(() => {
     $('.current-player').html(currentPlayer);
 
 
-    $('.play-again').on('click', () => {location.reload(true)})
+    $('.play-again').on('click', () => {location.reload(true)});
+    
+    $('.overlay-close').on('click', (event) => {
+        $(event.currentTarget).closest('.overlay').removeClass('overlay-active')
+    });
+    $('.overlay-display').on('click', (event) => {
+        const overlayName = $(event.currentTarget).attr('overlay');
+        $(`#${overlayName}`).addClass('overlay-active');
+    });
 });
