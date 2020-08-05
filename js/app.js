@@ -1,3 +1,7 @@
+//TODO: custom emoji?
+//TODO: TARGET function- show what the reult of click will be.
+//TODO flip board OR show direction of gem swap
+
 let endGame = false;
 let currentPlayer = "playerA";
 let players = ["playerA", "playerB"];
