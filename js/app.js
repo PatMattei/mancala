@@ -275,8 +275,7 @@ $(() => {
     greetPlayers();
 
 
-    //$('.pit').on('click', moveStones);
-    $('.pit').on('click', () => {displayWinScreen("playerA")});
+    $('.pit').on('click', moveStones);
     $('.current-player').html(currentPlayer);
 
 
