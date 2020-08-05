@@ -216,6 +216,9 @@ const updateStoneCounts = () => {
 const greetPlayers = () => {
     $('#emoji-selector').addClass('overlay-active');
     $('.user-text').html(`<b>${currentPlayer}</b>, choose your emoji:`);
+    
+    
+    emojis.forEach(emoji => $('.emoji-list').append($(`<li class="emoji">${emoji}</li>`)))
 
     $('.emoji').on('click', (event) => {
         emoji[currentPlayer] = $(event.currentTarget).text();

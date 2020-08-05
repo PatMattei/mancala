@@ -114,8 +114,16 @@
     cursor: pointer;
 }
 
+.emoji-list {
+    list-style: none;
+    overflow: auto;
+    height: 250px;
+}
 .emoji {
+    font-size: 26px;
     cursor: pointer;
+    display: inline-block;
+    margin: .5%;
 }
 
 /* 
